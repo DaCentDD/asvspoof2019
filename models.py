@@ -51,8 +51,8 @@ class MFCCModel(nn.Module):
         self.bn = nn.BatchNorm2d(32)
         self.dropout = nn.Dropout(0.5)
         self.logsoftmax = nn.LogSoftmax(dim=1)
-        self.fc1 = nn.Linear(480, 128)
-        self.fc2 = nn.Linear(128, 2)
+        self.fc1 = nn.Linear(32, 32)
+        self.fc2 = nn.Linear(32, 2)
     
     def forward(self, x):
         batch_size = x.size(0)
@@ -74,6 +74,7 @@ class MFCCModel(nn.Module):
         out = self.mp(out)
         out = out.view(batch_size, -1)
         out = self.dropout(out)
+        #print(out.shape)
         out = self.fc1(out)
         out = self.lrelu(out)
         out = self.fc2(out)

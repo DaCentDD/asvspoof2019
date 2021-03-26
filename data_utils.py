@@ -41,12 +41,12 @@ class ASVDataset(Dataset):
             v1_suffix='_v1'
         self.sysid_dict = {
             '-': 0,  # bonafide speech
-            'SS_1': 1, # Wavenet vocoder
-            'SS_2': 2, # Conventional vocoder WORLD
-            'SS_4': 3, # Conventional vocoder MERLIN
-            'US_1': 4, # Unit selection system MaryTTS
-            'VC_1': 5, # Voice conversion using neural networks
-            'VC_4': 6, # transform function-based voice conversion
+            'A01': 1, # Wavenet vocoder
+            'A02': 2, # Conventional vocoder WORLD
+            'A03': 3, # Conventional vocoder MERLIN
+            'A04': 4, # Unit selection system MaryTTS
+            'A05': 5, # Voice conversion using neural networks
+            'A06': 6, # transform function-based voice conversion
             # For PA:
             'AA':7,
             'AB':8,
@@ -59,12 +59,14 @@ class ASVDataset(Dataset):
             'CC': 15
         }
         self.is_eval = is_eval
+        print(self.is_eval)
         self.sysid_dict_inv = {v:k for k,v in self.sysid_dict.items()}
         self.data_root = data_root
         self.dset_name = 'eval' if is_eval else 'train' if is_train else 'dev'
-        self.protocols_fname = 'eval_{}.trl'.format(eval_part) if is_eval else 'train.trn' if is_train else 'dev.trl'
+        print(self.dset_name)
+        self.protocols_fname = 'eval.trl'.format(eval_part) if is_eval else 'train.trn' if is_train else 'dev.trl'
         self.protocols_dir = os.path.join(self.data_root,
-            '{}_protocols/'.format(self.prefix))
+            '{}_cm_protocols\\'.format(self.prefix))
         self.files_dir = os.path.join(self.data_root, '{}_{}'.format(
             self.prefix, self.dset_name )+v1_suffix, 'flac')
         self.protocols_fname = os.path.join(self.protocols_dir,
@@ -123,7 +125,7 @@ class ASVDataset(Dataset):
         if self.is_eval:
             return ASVFile(speaker_id='',
                 file_name=tokens[0],
-                path=os.path.join(self.files_dir, tokens[0] + '.flac'),
+                path=os.path.join(self.files_dir, tokens[1] + '.flac'),
                 sys_id=0,
                 key=0)
         return ASVFile(speaker_id=tokens[0],

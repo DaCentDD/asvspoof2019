@@ -180,11 +180,11 @@ if __name__ == '__main__':
         lambda x: Tensor(x)
     ])
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
-
     dev_set = data_utils.ASVDataset(is_train=False, is_logical=is_logical,
-                                    transform=transforms,
-                                    feature_name=args.features, is_eval=args.is_eval, eval_part=args.eval_part)
+                                transform=transforms,
+                                feature_name=args.features, is_eval=args.is_eval, eval_part=args.eval_part)
     dev_loader = DataLoader(dev_set, batch_size=args.batch_size, shuffle=True)
+    
     model = model_cls().to(device)
     print(args)
 
@@ -203,6 +203,10 @@ if __name__ == '__main__':
 
     train_loader = DataLoader(
         train_set, batch_size=args.batch_size, shuffle=True)
+    dev_set = data_utils.ASVDataset(is_train=False, is_logical=is_logical,
+                                transform=transforms,
+                                feature_name=args.features, is_eval=args.is_eval, eval_part=args.eval_part)
+    dev_loader = DataLoader(dev_set, batch_size=args.batch_size, shuffle=True)
     num_epochs = args.num_epochs
     writer = SummaryWriter('logs/{}'.format(model_tag))
     for epoch in range(num_epochs):
